@@ -7,6 +7,7 @@ import { AuthoritySection } from '@/components/sections/AuthoritySection';
 import { SolutionSection } from '@/components/sections/SolutionSection';
 import { WebinarSection } from '@/components/sections/WebinarSection';
 import { Footer } from '@/components/sections/Footer';
+import { WhatsAppButton } from '@/components/WhatsAppButton';
 import { useCountdown } from '@/hooks/useCountdown';
 import { useAvailableSpots } from '@/hooks/useAvailableSpots';
 import { useWebinarForm } from '@/hooks/useWebinarForm';
@@ -35,6 +36,7 @@ const Index = () => {
           {...webinarForm}
         />
         <Footer />
+        <WhatsAppButton />
       </div>
     </>
   );
