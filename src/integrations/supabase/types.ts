@@ -384,6 +384,36 @@ export type Database = {
         }
         Relationships: []
       }
+      ebook_leads: {
+        Row: {
+          created_at: string
+          email: string
+          email_sent: boolean | null
+          email_sent_at: string | null
+          id: string
+          name: string
+          whatsapp: string | null
+        }
+        Insert: {
+          created_at?: string
+          email: string
+          email_sent?: boolean | null
+          email_sent_at?: string | null
+          id?: string
+          name: string
+          whatsapp?: string | null
+        }
+        Update: {
+          created_at?: string
+          email?: string
+          email_sent?: boolean | null
+          email_sent_at?: string | null
+          id?: string
+          name?: string
+          whatsapp?: string | null
+        }
+        Relationships: []
+      }
       external_integrations: {
         Row: {
           created_at: string | null
