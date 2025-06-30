@@ -6,6 +6,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from '@/components/ui/dialog';
+import { useEbookSubmit } from '@/hooks/useEbookSubmit';
 
 interface LeadMagnetPopupProps {
   isOpen: boolean;
@@ -19,17 +20,16 @@ export const LeadMagnetPopup: React.FC<LeadMagnetPopupProps> = ({ isOpen, onClos
     whatsapp: ''
   });
   const [step, setStep] = useState(1);
-  const [isSubmitting, setIsSubmitting] = useState(false);
+  const { submitEbook, isSubmitting } = useEbookSubmit();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setIsSubmitting(true);
     
-    // Simular envio
-    await new Promise(resolve => setTimeout(resolve, 1000));
+    const result = await submitEbook(formData);
     
-    setStep(2);
-    setIsSubmitting(false);
+    if (result.success) {
+      setStep(2);
+    }
   };
 
   const handleWhatsAppRedirect = () => {
@@ -38,6 +38,14 @@ export const LeadMagnetPopup: React.FC<LeadMagnetPopupProps> = ({ isOpen, onClos
     window.open(whatsappUrl, '_blank');
     onClose();
   };
+
+  // Reset form when popup closes
+  useEffect(() => {
+    if (!isOpen) {
+      setStep(1);
+      setFormData({ name: '', email: '', whatsapp: '' });
+    }
+  }, [isOpen]);
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
