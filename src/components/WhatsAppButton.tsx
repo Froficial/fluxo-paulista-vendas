@@ -25,8 +25,6 @@ export const WhatsAppButton: React.FC = () => {
           duration: 2,
           ease: "easeInOut",
         },
-        hover: { duration: 0.2 },
-        tap: { duration: 0.1 }
       }}
     >
       <MessageCircle className="h-8 w-8" />
