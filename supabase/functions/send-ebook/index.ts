@@ -40,6 +40,9 @@ const handler = async (req: Request): Promise<Response> => {
 
     console.log('Processing ebook lead:', { name, email, whatsapp });
 
+    // Calcular data do próximo email (1 dia após)
+    const nextEmailDate = new Date(Date.now() + (1 * 24 * 60 * 60 * 1000));
+
     // Save lead to database
     const { data: leadData, error: leadError } = await supabase
       .from('ebook_leads')
@@ -47,6 +50,9 @@ const handler = async (req: Request): Promise<Response> => {
         name,
         email,
         whatsapp: whatsapp || null,
+        sequence_step: 1, // Primeiro email da sequência
+        next_email_date: nextEmailDate.toISOString(),
+        sequence_completed: false,
       })
       .select()
       .single();
@@ -91,6 +97,11 @@ const handler = async (req: Request): Promise<Response> => {
 
             <div style="text-align: center; margin: 30px 0;">
               <p style="font-size: 16px; margin-bottom: 20px;"><strong>👆 Seu e-book está em anexo neste email!</strong></p>
+            </div>
+
+            <div style="background: #e0f2fe; border-left: 4px solid #0284c7; padding: 20px; margin: 20px 0;">
+              <h3 style="color: #0c4a6e; margin-top: 0;">📧 Atenção: Mais conteúdo chegando!</h3>
+              <p style="color: #0369a1;">Nos próximos dias, você receberá dicas exclusivas e cases reais de empresas que transformaram seus resultados. Fique de olho na sua caixa de entrada!</p>
             </div>
 
             <div style="background: #fef3cd; border-left: 4px solid #f59e0b; padding: 20px; margin: 20px 0;">
@@ -143,6 +154,7 @@ const handler = async (req: Request): Promise<Response> => {
       .update({
         email_sent: true,
         email_sent_at: new Date().toISOString(),
+        last_email_sent_at: new Date().toISOString(),
       })
       .eq('id', leadData.id);
 

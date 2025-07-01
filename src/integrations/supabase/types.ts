@@ -391,7 +391,11 @@ export type Database = {
           email_sent: boolean | null
           email_sent_at: string | null
           id: string
+          last_email_sent_at: string | null
           name: string
+          next_email_date: string | null
+          sequence_completed: boolean | null
+          sequence_step: number | null
           whatsapp: string | null
         }
         Insert: {
@@ -400,7 +404,11 @@ export type Database = {
           email_sent?: boolean | null
           email_sent_at?: string | null
           id?: string
+          last_email_sent_at?: string | null
           name: string
+          next_email_date?: string | null
+          sequence_completed?: boolean | null
+          sequence_step?: number | null
           whatsapp?: string | null
         }
         Update: {
@@ -409,7 +417,11 @@ export type Database = {
           email_sent?: boolean | null
           email_sent_at?: string | null
           id?: string
+          last_email_sent_at?: string | null
           name?: string
+          next_email_date?: string | null
+          sequence_completed?: boolean | null
+          sequence_step?: number | null
           whatsapp?: string | null
         }
         Relationships: []
