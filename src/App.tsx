@@ -7,6 +7,8 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { HelmetProvider } from 'react-helmet-async';
 import Index from "./pages/Index";
 import NotFound from "./pages/NotFound";
+import { DiagnosticForm } from "./components/DiagnosticForm";
+import { CRMDashboard } from "./components/CRMDashboard";
 
 const queryClient = new QueryClient();
 
@@ -17,10 +19,12 @@ const App = () => (
         <Toaster />
         <Sonner />
         <BrowserRouter>
-          <Routes>
-            <Route path="/" element={<Index />} />
-            <Route path="*" element={<NotFound />} />
-          </Routes>
+        <Routes>
+          <Route path="/" element={<Index />} />
+          <Route path="/diagnostico" element={<DiagnosticForm />} />
+          <Route path="/crm" element={<CRMDashboard />} />
+          <Route path="*" element={<NotFound />} />
+        </Routes>
         </BrowserRouter>
       </TooltipProvider>
     </HelmetProvider>

@@ -232,12 +232,13 @@ const handler = async (req: Request): Promise<Response> => {
 
     // Buscar leads que precisam receber próximo email
     const { data: leadsToProcess, error: queryError } = await supabase
-      .from('ebook_leads')
+      .from('leads')
       .select('*')
       .lte('next_email_date', new Date().toISOString())
       .eq('sequence_completed', false)
       .gte('sequence_step', 1)
-      .lt('sequence_step', emailSequence.length);
+      .lt('sequence_step', emailSequence.length)
+      .in('sequence_type', ['ebook', 'webinar']);
 
     if (queryError) {
       console.error('Error querying leads:', queryError);
@@ -269,7 +270,7 @@ const handler = async (req: Request): Promise<Response> => {
         if (!sequenceConfig) {
           // Completar sequência se não há próximo step
           await supabase
-            .from('ebook_leads')
+            .from('leads')
             .update({
               sequence_completed: true,
               next_email_date: null,
@@ -302,7 +303,7 @@ const handler = async (req: Request): Promise<Response> => {
 
         // Atualizar lead
         await supabase
-          .from('ebook_leads')
+          .from('leads')
           .update({
             sequence_step: nextStep,
             last_email_sent_at: new Date().toISOString(),
@@ -310,6 +311,19 @@ const handler = async (req: Request): Promise<Response> => {
             sequence_completed: !nextEmailDate,
           })
           .eq('id', lead.id);
+
+        // Log interaction
+        await supabase
+          .from('lead_interactions')
+          .insert({
+            lead_id: lead.id,
+            interaction_type: 'email_sent',
+            interaction_data: {
+              email_type: 'sequence_email',
+              sequence_step: nextStep,
+              subject: sequenceConfig.subject
+            }
+          });
 
         console.log(`Email sent successfully to ${lead.email} - Step ${nextStep}`);
         processedCount++;

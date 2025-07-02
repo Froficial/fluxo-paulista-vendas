@@ -426,6 +426,45 @@ export type Database = {
         }
         Relationships: []
       }
+      email_templates: {
+        Row: {
+          created_at: string
+          delay_days: number
+          html_content: string
+          id: string
+          is_active: boolean | null
+          name: string
+          sequence_type: string
+          step_number: number
+          subject: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          delay_days?: number
+          html_content: string
+          id?: string
+          is_active?: boolean | null
+          name: string
+          sequence_type: string
+          step_number: number
+          subject: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          delay_days?: number
+          html_content?: string
+          id?: string
+          is_active?: boolean | null
+          name?: string
+          sequence_type?: string
+          step_number?: number
+          subject?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       external_integrations: {
         Row: {
           created_at: string | null
@@ -542,6 +581,146 @@ export type Database = {
           },
         ]
       }
+      lead_analytics: {
+        Row: {
+          conversions_count: number | null
+          created_at: string
+          date: string
+          email_clicks: number | null
+          email_opens: number | null
+          id: string
+          lead_source: string
+          leads_count: number | null
+        }
+        Insert: {
+          conversions_count?: number | null
+          created_at?: string
+          date?: string
+          email_clicks?: number | null
+          email_opens?: number | null
+          id?: string
+          lead_source: string
+          leads_count?: number | null
+        }
+        Update: {
+          conversions_count?: number | null
+          created_at?: string
+          date?: string
+          email_clicks?: number | null
+          email_opens?: number | null
+          id?: string
+          lead_source?: string
+          leads_count?: number | null
+        }
+        Relationships: []
+      }
+      lead_interactions: {
+        Row: {
+          created_at: string
+          id: string
+          interaction_data: Json | null
+          interaction_type: string
+          lead_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          interaction_data?: Json | null
+          interaction_type: string
+          lead_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          interaction_data?: Json | null
+          interaction_type?: string
+          lead_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "lead_interactions_lead_id_fkey"
+            columns: ["lead_id"]
+            isOneToOne: false
+            referencedRelation: "leads"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      leads: {
+        Row: {
+          company_name: string | null
+          created_at: string
+          email: string
+          id: string
+          last_email_sent_at: string | null
+          lead_score: number | null
+          lead_source: string
+          lead_status: string
+          metadata: Json | null
+          name: string
+          next_email_date: string | null
+          notes: string | null
+          referrer: string | null
+          sequence_completed: boolean | null
+          sequence_step: number | null
+          sequence_type: string | null
+          tags: string[] | null
+          updated_at: string
+          utm_campaign: string | null
+          utm_medium: string | null
+          utm_source: string | null
+          whatsapp: string | null
+        }
+        Insert: {
+          company_name?: string | null
+          created_at?: string
+          email: string
+          id?: string
+          last_email_sent_at?: string | null
+          lead_score?: number | null
+          lead_source?: string
+          lead_status?: string
+          metadata?: Json | null
+          name: string
+          next_email_date?: string | null
+          notes?: string | null
+          referrer?: string | null
+          sequence_completed?: boolean | null
+          sequence_step?: number | null
+          sequence_type?: string | null
+          tags?: string[] | null
+          updated_at?: string
+          utm_campaign?: string | null
+          utm_medium?: string | null
+          utm_source?: string | null
+          whatsapp?: string | null
+        }
+        Update: {
+          company_name?: string | null
+          created_at?: string
+          email?: string
+          id?: string
+          last_email_sent_at?: string | null
+          lead_score?: number | null
+          lead_source?: string
+          lead_status?: string
+          metadata?: Json | null
+          name?: string
+          next_email_date?: string | null
+          notes?: string | null
+          referrer?: string | null
+          sequence_completed?: boolean | null
+          sequence_step?: number | null
+          sequence_type?: string | null
+          tags?: string[] | null
+          updated_at?: string
+          utm_campaign?: string | null
+          utm_medium?: string | null
+          utm_source?: string | null
+          whatsapp?: string | null
+        }
+        Relationships: []
+      }
       password_history: {
         Row: {
           created_at: string | null
@@ -642,6 +821,41 @@ export type Database = {
           status?: string | null
         }
         Relationships: []
+      }
+      webinar_registrations: {
+        Row: {
+          attended: boolean | null
+          attended_at: string | null
+          created_at: string
+          id: string
+          lead_id: string
+          webinar_date: string | null
+        }
+        Insert: {
+          attended?: boolean | null
+          attended_at?: string | null
+          created_at?: string
+          id?: string
+          lead_id: string
+          webinar_date?: string | null
+        }
+        Update: {
+          attended?: boolean | null
+          attended_at?: string | null
+          created_at?: string
+          id?: string
+          lead_id?: string
+          webinar_date?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "webinar_registrations_lead_id_fkey"
+            columns: ["lead_id"]
+            isOneToOne: false
+            referencedRelation: "leads"
+            referencedColumns: ["id"]
+          },
+        ]
       }
     }
     Views: {

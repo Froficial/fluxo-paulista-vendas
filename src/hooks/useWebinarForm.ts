@@ -1,6 +1,6 @@
 
 import { useState } from 'react';
-import { toast } from 'sonner';
+import { useWebinarSubmit } from './useWebinarSubmit';
 
 interface FormData {
   name: string;
@@ -9,20 +9,16 @@ interface FormData {
 
 export const useWebinarForm = (onSuccess?: () => void) => {
   const [formData, setFormData] = useState<FormData>({ name: '', email: '' });
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const [showSuccess, setShowSuccess] = useState(false);
+  const { submitWebinar, isSubmitting, showSuccess } = useWebinarSubmit();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setIsSubmitting(true);
-
-    // Simulate form submission
-    await new Promise(resolve => setTimeout(resolve, 2000));
     
-    setShowSuccess(true);
-    if (onSuccess) onSuccess();
-    toast.success('Inscrição confirmada! Verifique seu email.');
-    setIsSubmitting(false);
+    const result = await submitWebinar(formData);
+    
+    if (result.success && onSuccess) {
+      onSuccess();
+    }
   };
 
   return {

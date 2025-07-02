@@ -12,6 +12,10 @@ interface EbookLeadRequest {
   name: string;
   email: string;
   whatsapp?: string;
+  utm_source?: string;
+  utm_medium?: string;
+  utm_campaign?: string;
+  referrer?: string;
 }
 
 const handler = async (req: Request): Promise<Response> => {
@@ -36,23 +40,29 @@ const handler = async (req: Request): Promise<Response> => {
     // Initialize Resend
     const resend = new Resend(Deno.env.get('RESEND_API_KEY')!);
 
-    const { name, email, whatsapp }: EbookLeadRequest = await req.json();
+    const { name, email, whatsapp, utm_source, utm_medium, utm_campaign, referrer }: EbookLeadRequest = await req.json();
 
     console.log('Processing ebook lead:', { name, email, whatsapp });
 
     // Calcular data do próximo email (1 dia após)
     const nextEmailDate = new Date(Date.now() + (1 * 24 * 60 * 60 * 1000));
 
-    // Save lead to database
+    // Save lead to unified leads table
     const { data: leadData, error: leadError } = await supabase
-      .from('ebook_leads')
+      .from('leads')
       .insert({
         name,
         email,
         whatsapp: whatsapp || null,
+        lead_source: 'ebook',
+        sequence_type: 'ebook',
         sequence_step: 1, // Primeiro email da sequência
         next_email_date: nextEmailDate.toISOString(),
         sequence_completed: false,
+        utm_source,
+        utm_medium,
+        utm_campaign,
+        referrer,
       })
       .select()
       .single();
@@ -150,13 +160,23 @@ const handler = async (req: Request): Promise<Response> => {
 
     // Update lead as email sent
     const { error: updateError } = await supabase
-      .from('ebook_leads')
+      .from('leads')
       .update({
-        email_sent: true,
-        email_sent_at: new Date().toISOString(),
         last_email_sent_at: new Date().toISOString(),
       })
       .eq('id', leadData.id);
+
+    // Log interaction
+    await supabase
+      .from('lead_interactions')
+      .insert({
+        lead_id: leadData.id,
+        interaction_type: 'email_sent',
+        interaction_data: {
+          email_type: 'ebook_welcome',
+          subject: '🎁 Seu E-book: Os 7 Segredos para Destravar o Crescimento'
+        }
+      });
 
     if (updateError) {
       console.error('Error updating lead:', updateError);
