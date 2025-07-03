@@ -20,7 +20,7 @@ const App = () => (
   <QueryClientProvider client={queryClient}>
     <HelmetProvider>
       <TooltipProvider>
-        <TrackingPixels />
+        {/* <TrackingPixels /> */}
         <Toaster />
         <Sonner />
         <BrowserRouter>
