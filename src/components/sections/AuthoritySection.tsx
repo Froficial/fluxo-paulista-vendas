@@ -1,73 +1,74 @@
-
 import React from 'react';
-import { Star } from 'lucide-react';
 import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
+import { Star, Award, TrendingUp, Users } from 'lucide-react';
 
 export const AuthoritySection: React.FC = () => {
-  const testimonials = [
+  const achievements = [
     {
-      name: "Carlos Mendes",
-      company: "Advocacia Mendes & Silva",
-      result: "300% mais clientes em 90 dias",
-      image: "👨‍💼"
+      icon: TrendingUp,
+      number: "R$ 2.5M+",
+      label: "Em vendas geradas"
     },
     {
-      name: "Ana Paula Santos",
-      company: "Clínica BellaForma",
-      result: "R$ 180k em novos contratos",
-      image: "👩‍⚕️"
+      icon: Users,
+      number: "15.000+",
+      label: "Empresários ajudados"
     },
     {
-      name: "Roberto Lima",
-      company: "Consultoria TechSP",
-      result: "Fluxo previsível de R$ 50k/mês",
-      image: "👨‍💻"
+      icon: Award,
+      number: "98%",
+      label: "Taxa de satisfação"
+    },
+    {
+      icon: Star,
+      number: "4.9/5",
+      label: "Avaliação média"
     }
   ];
 
   return (
-    <section className="py-20 bg-gray-100">
-      <div className="container mx-auto px-6">
-        <div className="text-center max-w-4xl mx-auto mb-16">
-          <Badge className="bg-blue-100 text-blue-800 mb-4">QUEM SOMOS</Badge>
-          <h2 className="text-4xl md:text-5xl font-bold mb-6 text-gray-900">
-            Nós somos o <span className="text-blue-600">GUIA</span>. Você é o <span className="text-green-600">HERÓI</span>.
+    <section className="py-20 px-4 bg-primary/5">
+      <div className="max-w-6xl mx-auto">
+        <div className="text-center mb-16">
+          <Badge variant="secondary" className="mb-6">
+            🏆 Resultados Comprovados
+          </Badge>
+          <h2 className="text-3xl md:text-4xl font-bold mb-6">
+            Por Que Confiar em <span className="text-primary">Nossa Metodologia</span>?
           </h2>
-          <p className="text-xl text-gray-600 leading-relaxed">
-            Entendemos a pressão de gerir um negócio em São Paulo. Por isso, não vendemos "marketing". 
-            <strong className="text-gray-900"> Nós implementamos um sistema comprovado</strong> que entrega clareza, controle e, 
-            o mais importante, <strong className="text-green-600">resultados previsíveis</strong>.
+          <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
+            Não é teoria. São resultados reais de empresários que transformaram seus negócios
           </p>
         </div>
-
-        <div className="grid md:grid-cols-3 gap-8 mb-16">
-          {testimonials.map((testimonial, index) => (
-            <Card key={index} className="bg-white shadow-xl hover:shadow-2xl transition-all duration-300">
-              <CardContent className="p-8 text-center">
-                <div className="text-4xl mb-4">{testimonial.image}</div>
-                <div className="mb-4">
-                  {[...Array(5)].map((_, i) => (
-                    <Star key={i} className="h-5 w-5 text-yellow-400 inline fill-current" />
-                  ))}
+        
+        <div className="grid md:grid-cols-4 gap-6 mb-16">
+          {achievements.map((achievement, index) => (
+            <Card key={index} className="text-center hover:shadow-lg transition-shadow">
+              <CardContent className="p-6">
+                <achievement.icon className="h-10 w-10 text-primary mx-auto mb-4" />
+                <div className="text-3xl font-bold text-primary mb-2">
+                  {achievement.number}
                 </div>
-                <div className="bg-green-100 text-green-800 font-bold py-2 px-4 rounded-lg mb-4">
-                  {testimonial.result}
-                </div>
-                <p className="font-semibold text-gray-900">{testimonial.name}</p>
-                <p className="text-gray-600 text-sm">{testimonial.company}</p>
+                <p className="text-muted-foreground">{achievement.label}</p>
               </CardContent>
             </Card>
           ))}
         </div>
-
-        <div className="text-center">
-          <p className="font-semibold text-gray-500 uppercase tracking-wider mb-6">EMPRESAS QUE CONFIAM EM NOSSO SISTEMA</p>
-          <div className="flex justify-center items-center space-x-12 grayscale opacity-60">
-            <div className="text-xl font-bold">Advocacia Martins</div>
-            <div className="text-xl font-bold">Clínica BellaForma</div>
-            <div className="text-xl font-bold">Consultoria TechSP</div>
+        
+        <div className="bg-white rounded-lg p-8 shadow-lg">
+          <div className="flex items-center gap-4 mb-6">
+            <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center">
+              <Users className="h-8 w-8 text-primary" />
+            </div>
+            <div>
+              <h3 className="text-xl font-bold">João Silva - Fundador</h3>
+              <p className="text-muted-foreground">Especialista em Funis de Vendas</p>
+            </div>
           </div>
+          <p className="text-muted-foreground italic">
+            "Após 10 anos ajudando empresários a escalar seus negócios, desenvolvemos um sistema que funciona para qualquer nicho. O segredo está na combinação de psicologia, tecnologia e processo."
+          </p>
         </div>
       </div>
     </section>

@@ -2,13 +2,15 @@
 import { useState, useEffect } from 'react';
 
 interface CountdownState {
+  days: number;
   hours: number;
   minutes: number;
   seconds: number;
 }
 
-export const useCountdown = (initialHours = 23, initialMinutes = 47, initialSeconds = 32) => {
+export const useCountdown = (initialDays = 2, initialHours = 23, initialMinutes = 47, initialSeconds = 32) => {
   const [timeLeft, setTimeLeft] = useState<CountdownState>({
+    days: initialDays,
     hours: initialHours,
     minutes: initialMinutes,
     seconds: initialSeconds
@@ -22,7 +24,9 @@ export const useCountdown = (initialHours = 23, initialMinutes = 47, initialSeco
         } else if (prev.minutes > 0) {
           return { ...prev, minutes: prev.minutes - 1, seconds: 59 };
         } else if (prev.hours > 0) {
-          return { hours: prev.hours - 1, minutes: 59, seconds: 59 };
+          return { ...prev, hours: prev.hours - 1, minutes: 59, seconds: 59 };
+        } else if (prev.days > 0) {
+          return { ...prev, days: prev.days - 1, hours: 23, minutes: 59, seconds: 59 };
         }
         return prev;
       });
