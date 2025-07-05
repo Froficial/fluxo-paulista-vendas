@@ -56,6 +56,19 @@ export default function EbookLanding() {
               <p>✅ Sequência de dicas exclusivas ativada</p>
               <p>✅ Convite para análise gratuita incluído</p>
             </div>
+            
+            <div className="mt-6 p-4 bg-accent/10 rounded-lg border border-accent/20">
+              <h3 className="font-bold text-accent mb-2">🎁 Oferta Especial para Você!</h3>
+              <p className="text-sm mb-3">Como você baixou nosso e-book, tem direito a uma oferta exclusiva...</p>
+              <Button 
+                variant="outline" 
+                size="sm" 
+                className="w-full border-accent text-accent hover:bg-accent hover:text-white"
+                onClick={() => window.open('/tripwire', '_blank')}
+              >
+                Ver Oferta Especial (67% OFF)
+              </Button>
+            </div>
           </CardContent>
         </Card>
       </div>

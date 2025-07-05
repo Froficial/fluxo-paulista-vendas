@@ -9,6 +9,8 @@ import Index from "./pages/Index";
 import NotFound from "./pages/NotFound";
 import EbookLanding from "./pages/EbookLanding";
 import WebinarLanding from "./pages/WebinarLanding";
+import TripwirePage from "./pages/TripwirePage";
+import CoreOfferPage from "./pages/CoreOfferPage";
 import { DiagnosticForm } from "./components/DiagnosticForm";
 import { CRMDashboard } from "./components/CRMDashboard";
 import { UnsubscribeManager } from "./components/UnsubscribeManager";
@@ -28,6 +30,8 @@ const App = () => (
           <Route path="/" element={<Index />} />
           <Route path="/ebook" element={<EbookLanding />} />
           <Route path="/webinar" element={<WebinarLanding />} />
+          <Route path="/tripwire" element={<TripwirePage />} />
+          <Route path="/oferta" element={<CoreOfferPage />} />
           <Route path="/diagnostico" element={<DiagnosticForm />} />
           <Route path="/crm" element={<CRMDashboard />} />
           <Route path="/unsubscribe" element={<UnsubscribeManager />} />
