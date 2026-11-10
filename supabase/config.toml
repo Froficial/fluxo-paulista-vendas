@@ -1,1 +1,4 @@
 project_id = "eftwdaeihoxcwjvkqjdc"
+
+[functions.ai-lead-analysis]
+verify_jwt = true

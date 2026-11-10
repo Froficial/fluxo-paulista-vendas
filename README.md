@@ -1,73 +1,57 @@
-# Welcome to your Lovable project
+# Assistente de leads com IA
 
-## Project info
+Este repositório contém uma aplicação de captação e gestão de leads, CRM e automações de e-mail construída com React, TypeScript, Vite e Supabase. O recurso **Assistente de leads com IA** acrescenta análise comercial assistida ao CRM.
 
-**URL**: https://lovable.dev/projects/97de77f9-70a2-4ad8-941f-b828bf4d8191
+## O que faz
 
-## How can I edit this code?
+- Carrega até 50 leads recentes do CRM e permite escolher um para análise.
+- Classifica prioridade, intenção e urgência como alta, média ou baixa.
+- Resume os sinais disponíveis, recomenda um próximo passo e redige uma mensagem para revisão humana.
+- Não envia mensagens automaticamente e não envia nome nem e-mail do contato ao provedor de IA.
+- A análise não altera o status ou os dados do lead.
 
-There are several ways of editing your application.
+A análise é uma sugestão probabilística, não uma decisão automática. Se não houver dados suficientes, o modelo é instruído a indicar incerteza e sugerir uma pergunta de descoberta.
 
-**Use Lovable**
+## Executar localmente
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/97de77f9-70a2-4ad8-941f-b828bf4d8191) and start prompting.
-
-Changes made via Lovable will be committed automatically to this repo.
-
-**Use your preferred IDE**
-
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
-
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
-
-Follow these steps:
+Requisitos: Node.js e npm.
 
 ```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
-
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
-
-# Step 3: Install the necessary dependencies.
-npm i
-
-# Step 4: Start the development server with auto-reloading and an instant preview.
+npm install
 npm run dev
 ```
 
-**Edit a file directly in GitHub**
+Abra `/ai-assistant` na aplicação. O navegador também precisa ter uma sessão autenticada válida no Supabase e acesso de leitura à tabela `leads`.
 
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
+## Configurar a função de IA
 
-**Use GitHub Codespaces**
+A chave do provedor é usada apenas na função server-side; nunca coloque `OPENAI_API_KEY` no frontend ou em variáveis `VITE_*`.
 
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
+1. Configure a chave no projeto Supabase:
 
-## What technologies are used for this project?
+   ```sh
+   supabase secrets set OPENAI_API_KEY=...
+   ```
 
-This project is built with:
+2. Opcionalmente, escolha outro modelo compatível com a API de Chat Completions:
 
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
+   ```sh
+   supabase secrets set OPENAI_MODEL=gpt-4o-mini
+   ```
 
-## How can I deploy this project?
+3. Publique a função e a configuração:
 
-Simply open [Lovable](https://lovable.dev/projects/97de77f9-70a2-4ad8-941f-b828bf4d8191) and click on Share -> Publish.
+   ```sh
+   supabase functions deploy ai-lead-analysis
+   ```
 
-## Can I connect a custom domain to my Lovable project?
+A função valida a sessão do usuário e exige JWT. Para restringir chamadas do navegador em produção, defina `APP_ORIGIN` como a origem exata do site antes de publicar; CORS aberto não substitui autenticação.
 
-Yes, you can!
+## Teste e validação
 
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
+```sh
+npm run lint
+npm run build
+```
 
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/tips-tricks/custom-domain#step-by-step-guide)
+Teste manualmente com um usuário autenticado e um lead de demonstração sem informações pessoais reais. Verifique o cenário de função não publicada, segredo ausente, sessão expirada e dados incompletos. Não registre dados sensíveis nos logs e não apresente métricas de economia ou conversão sem medi-las.
